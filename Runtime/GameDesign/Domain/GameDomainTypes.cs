@@ -163,19 +163,6 @@ namespace GuildReceptionist.GameDesign.Domain
     }
 
     [Serializable]
-    public sealed class Party
-    {
-        public string PartyId { get; }
-        public IReadOnlyList<AdventurerState> Members { get; }
-
-        public Party(string partyId, IReadOnlyList<AdventurerState>? members = null)
-        {
-            PartyId = partyId;
-            Members = members ?? Array.Empty<AdventurerState>();
-        }
-    }
-
-    [Serializable]
     public readonly struct WorldStateSnapshot
     {
         public readonly int DayIndex;
