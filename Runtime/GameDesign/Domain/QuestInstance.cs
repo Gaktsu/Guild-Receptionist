@@ -111,7 +111,7 @@ namespace GuildReceptionist.GameDesign.Domain
             ExpireDay = expireDay;
             TimeLimitDays = timeLimitDays;
             LocationId = locationId;
-            EnvironmentTags = environmentTags;
+            EnvironmentTags = environmentTags ?? Array.Empty<string>();
             BaseReward = baseReward;
             ExpectedReward = baseReward;
             AssignedPartyId = null;

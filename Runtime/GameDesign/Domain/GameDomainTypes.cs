@@ -302,24 +302,6 @@ namespace GuildReceptionist.GameDesign.Domain
     /// 현재는 파티 ID만 보유하며, 추후 멤버 관리 등으로 확장 가능하다.
     /// </summary>
     [Serializable]
-    public sealed class Party
-    {
-        /// <summary>파티 고유 식별자</summary>
-        public string PartyId { get; }
-        public IReadOnlyList<AdventurerState> Members { get; }
-
-        public Party(string partyId, IReadOnlyList<AdventurerState>? members = null)
-        {
-            PartyId = partyId;
-            Members = members ?? Array.Empty<AdventurerState>();
-        }
-    }
-
-    /// <summary>
-    /// 월드 상태 스냅샷 – 특정 시점의 게임 월드 상태.
-    /// 현재는 게임 진행 일차(DayIndex)만 포함한다.
-    /// </summary>
-    [Serializable]
     public readonly struct WorldStateSnapshot
     {
         /// <summary>현재 게임 진행 일차 (0-indexed)</summary>
