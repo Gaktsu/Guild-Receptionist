@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GuildReceptionist.GameDesign.Domain
 {
@@ -186,12 +185,4 @@ namespace GuildReceptionist.GameDesign.Domain
         }
     }
 
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/RewardTable")]
-    public sealed class RewardTable : ScriptableObject { }
-
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/LocationProfileData")]
-    public sealed class LocationProfileData : ScriptableObject { }
-
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/TraitData")]
-    public sealed class TraitData : ScriptableObject { }
 }
