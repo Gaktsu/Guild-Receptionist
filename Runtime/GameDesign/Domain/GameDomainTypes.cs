@@ -71,10 +71,14 @@ namespace GuildReceptionist.GameDesign.Domain
         /// <summary>부상에 대한 텍스트 설명</summary>
         public readonly string Description;
 
-        public InjuryInfo(int severity, string description)
+        /// <summary>부상 대상 모험가 ID (알 수 없으면 빈 문자열)</summary>
+        public readonly string AdventurerId;
+
+        public InjuryInfo(int severity, string description, string adventurerId = "")
         {
             Severity = severity;
             Description = description;
+            AdventurerId = adventurerId ?? string.Empty;
         }
     }
 
