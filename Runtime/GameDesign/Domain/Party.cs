@@ -21,7 +21,22 @@ namespace GuildReceptionist.GameDesign.Domain
             }
 
             PartyId = partyId;
-            _members = members is null ? new List<AdventurerState>() : new List<AdventurerState>(members);
+            _members = new List<AdventurerState>();
+
+            if (members is null)
+            {
+                return;
+            }
+
+            foreach (var member in members)
+            {
+                if (member is null)
+                {
+                    continue;
+                }
+
+                AddMember(member);
+            }
         }
 
         public bool AddMember(AdventurerState member)
