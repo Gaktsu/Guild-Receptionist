@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GuildReceptionist.GameDesign.Domain
 {
@@ -163,33 +162,27 @@ namespace GuildReceptionist.GameDesign.Domain
     }
 
     [Serializable]
-    public sealed class Party
-    {
-        public string PartyId { get; }
-
-        public Party(string partyId)
-        {
-            PartyId = partyId;
-        }
-    }
-
-    [Serializable]
     public readonly struct WorldStateSnapshot
     {
         public readonly int DayIndex;
+        public readonly float WeatherSeverity;
+        public readonly float GlobalRiskLevel;
+        public readonly IReadOnlyDictionary<string, float> LocationRiskById;
+        public readonly IReadOnlyList<string> ActiveWorldTags;
 
-        public WorldStateSnapshot(int dayIndex)
+        public WorldStateSnapshot(
+            int dayIndex,
+            float weatherSeverity = 0f,
+            float globalRiskLevel = 0f,
+            IReadOnlyDictionary<string, float>? locationRiskById = null,
+            IReadOnlyList<string>? activeWorldTags = null)
         {
             DayIndex = dayIndex;
+            WeatherSeverity = weatherSeverity;
+            GlobalRiskLevel = globalRiskLevel;
+            LocationRiskById = locationRiskById ?? new Dictionary<string, float>();
+            ActiveWorldTags = activeWorldTags ?? Array.Empty<string>();
         }
     }
 
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/RewardTable")]
-    public sealed class RewardTable : ScriptableObject { }
-
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/LocationProfileData")]
-    public sealed class LocationProfileData : ScriptableObject { }
-
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/TraitData")]
-    public sealed class TraitData : ScriptableObject { }
 }
