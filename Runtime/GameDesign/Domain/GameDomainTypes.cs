@@ -306,10 +306,12 @@ namespace GuildReceptionist.GameDesign.Domain
     {
         /// <summary>파티 고유 식별자</summary>
         public string PartyId { get; }
+        public IReadOnlyList<AdventurerState> Members { get; }
 
-        public Party(string partyId)
+        public Party(string partyId, IReadOnlyList<AdventurerState>? members = null)
         {
             PartyId = partyId;
+            Members = members ?? Array.Empty<AdventurerState>();
         }
     }
 
