@@ -179,23 +179,10 @@ namespace GuildReceptionist.GameDesign.Domain
     public readonly struct WorldStateSnapshot
     {
         public readonly int DayIndex;
-        public readonly float WeatherSeverity;
-        public readonly float GlobalRiskLevel;
-        public readonly IReadOnlyDictionary<string, float> LocationRiskById;
-        public readonly IReadOnlyList<string> ActiveWorldTags;
 
-        public WorldStateSnapshot(
-            int dayIndex,
-            float weatherSeverity = 0f,
-            float globalRiskLevel = 0f,
-            IReadOnlyDictionary<string, float>? locationRiskById = null,
-            IReadOnlyList<string>? activeWorldTags = null)
+        public WorldStateSnapshot(int dayIndex)
         {
             DayIndex = dayIndex;
-            WeatherSeverity = weatherSeverity;
-            GlobalRiskLevel = globalRiskLevel;
-            LocationRiskById = locationRiskById ?? new Dictionary<string, float>();
-            ActiveWorldTags = activeWorldTags ?? Array.Empty<string>();
         }
     }
 
