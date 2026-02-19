@@ -93,7 +93,7 @@ namespace GuildReceptionist.GameDesign
                 return false;
             }
 
-            quest = board.GetOpenQuests().FirstOrDefault();
+            quest = board.GetOpenQuests().FirstOrDefault(q => q.State == QuestState.Pending);
             if (quest is null)
             {
                 failReason = "No open quest found.";
