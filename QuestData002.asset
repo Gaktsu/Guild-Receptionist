@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd00c79dc128a7849b69f52646ff6da7, type: 3}
+  m_Name: QuestData002
+  m_EditorClassIdentifier: Assembly-CSharp::GuildReceptionist.GameDesign.Data.QuestData
+  questId: Q_002
+  displayName: Sample_Quest_002
+  category: 1
+  baseRank: 0
+  recommendedPower: 3
+  rewardTable: {fileID: 0}
+  locationProfile: {fileID: 0}
+  timeLimitDays: 1

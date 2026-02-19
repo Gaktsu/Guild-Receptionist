@@ -2,6 +2,7 @@
 using System;
 using System.Linq;
 using GuildReceptionist.GameDesign.Domain;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,7 +12,7 @@ namespace GuildReceptionist.GameDesign
     {
         [Header("References")]
         [SerializeField] private GameLauncher gameLauncher = null!;
-        [SerializeField] private Text resultText = null!;
+        [SerializeField] private TextMeshProUGUI resultText = null!;
 
         [Header("Debug Settings")]
         [SerializeField] private string debugPartyId = "debug-ui-party";
