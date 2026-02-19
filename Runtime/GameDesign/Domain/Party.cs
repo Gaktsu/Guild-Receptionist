@@ -71,6 +71,23 @@ namespace GuildReceptionist.GameDesign.Domain
             return total / _members.Count;
         }
 
+
+        public float GetAverageFatigue()
+        {
+            if (_members.Count == 0)
+            {
+                return 0f;
+            }
+
+            float totalFatigue = 0f;
+            foreach (var member in _members)
+            {
+                totalFatigue += member.Fatigue;
+            }
+
+            return totalFatigue / _members.Count;
+        }
+
         public StatBlock CalculateTotalStats()
         {
             var total = new StatBlock();
