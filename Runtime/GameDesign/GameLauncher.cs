@@ -126,6 +126,7 @@ namespace GuildReceptionist.GameDesign
             }
 
             quest.AssignToParty(party.PartyId);
+            MarkPartyAssignedToQuest(party, quest.QuestId);
             quest.MarkInProgress();
 
             SimpleEventBus.Publish(new QuestAssignedEvent
@@ -149,6 +150,7 @@ namespace GuildReceptionist.GameDesign
             });
 
             quest.Resolve(resolveResult.Outcome);
+            ApplyMissionResultToPartyState(resolveResult, party);
 
             SimpleEventBus.Publish(new MissionResolvedEvent
             {
@@ -158,6 +160,40 @@ namespace GuildReceptionist.GameDesign
                 Rewards = resolveResult.Outcome.Rewards,
                 Injuries = resolveResult.Outcome.Injuries
             });
+        }
+
+        private static void MarkPartyAssignedToQuest(Party party, string questId)
+        {
+            foreach (var member in party.Members)
+            {
+                member.AssignToQuest(questId);
+            }
+        }
+
+        private static void ApplyMissionResultToPartyState(ResolveResult resolveResult, Party party)
+        {
+            foreach (var member in party.Members)
+            {
+                member.ApplyFatigue(resolveResult.Fatigue.FatigueDelta);
+                member.ReleaseFromQuest();
+            }
+
+            foreach (var injury in resolveResult.Injuries.Injuries)
+            {
+                if (string.IsNullOrWhiteSpace(injury.AdventurerId))
+                {
+                    continue;
+                }
+
+                var injuredMember = party.Members.FirstOrDefault(member => member.AdventurerId == injury.AdventurerId);
+                if (injuredMember is null)
+                {
+                    continue;
+                }
+
+                injuredMember.ApplyInjury(injury);
+                injuredMember.ReleaseFromQuest();
+            }
         }
 
         private void OnMissionResolved(MissionResolvedEvent evt)
@@ -199,9 +235,7 @@ namespace GuildReceptionist.GameDesign
             var locationId = data.LocationProfile == null ? "unknown" : data.LocationProfile.name;
             var baseDifficulty = Math.Max(1f, data.RecommendedPower);
             var timeLimitDays = Math.Max(1, data.TimeLimitDays);
-            var baseReward = new RewardPackage(
-                gold: Math.Max(10, data.RecommendedPower * 12),
-                reputation: Math.Max(1, (int)data.BaseRank + 1));
+            var baseReward = BuildBaseReward(data);
 
             return new QuestInstance(
                 questId: questId,
@@ -215,6 +249,20 @@ namespace GuildReceptionist.GameDesign
                 locationId: locationId,
                 environmentTags: Array.Empty<string>(),
                 baseReward: baseReward);
+        }
+
+        private static RewardPackage BuildBaseReward(QuestData data)
+        {
+            if (data.RewardTable != null)
+            {
+                var rewardEntry = data.RewardTable.GetDefaultEntry();
+                return new RewardPackage(rewardEntry.Gold, rewardEntry.Reputation);
+            }
+
+            Debug.LogWarning($"[GameLauncher] Quest '{data.name}' is missing RewardTable. Falling back to derived rewards.");
+            return new RewardPackage(
+                gold: Math.Max(10, data.RecommendedPower * 12),
+                reputation: Math.Max(1, (int)data.BaseRank + 1));
         }
     }
 }

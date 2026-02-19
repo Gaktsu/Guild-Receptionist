@@ -223,7 +223,10 @@ namespace GuildReceptionist.GameDesign.Domain
                 if (roll < 0.20f * resistFactor)
                 {
                     var severity = Math.Clamp(baseSeverity + random.Next(-1, 2), 1, 5);
-                    injuries.Add(new InjuryInfo(severity, $"{member.Name} suffered mission injury."));
+                    injuries.Add(new InjuryInfo(
+                        severity: severity,
+                        description: $"{member.Name} suffered mission injury.",
+                        adventurerId: member.AdventurerId));
                 }
             }
 
