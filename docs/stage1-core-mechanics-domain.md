@@ -33,10 +33,10 @@
 - **Adventurer**: 스탯, 직군, 특성, 컨디션, 부상, 경험치 등 개인 상태 관리
 - **AdventurerRoster**: 전체 모험가 풀(고용/이탈/대기/원정중) 관리
 - **Party**: 역할군(탱/딜/지원/탐지 등) 조합과 시너지 값 표현
-- **EquipmentInventory**: 장비/소모품/재료 보유량과 장착 상태 관리
+- **EquipmentInventory**: 장비/소모품/재료 보유량과 장착 상태 관리 .
 - **MissionResolver**: 배정 결과를 확률/규칙 기반으로 시뮬레이션해 결과 산출
 - **RewardLedger**: 골드, 재화, 평판, 아이템 획득/손실 내역 기록
-- **InjuryRecoverySystem**: 부상/피로 회복 및 치료 자원 소모 처리
+- **InjuryRecoverySystem**: 부상/피로 회복 및 치료 자원 소모 처리 .
 - **GuildHQ**: 길드 시설 레벨, 슬롯, 운영 보너스(회복속도/정보정확도 등) 관리
 - **FacilityUpgradeService**: 거점 건물 업그레이드 조건/비용/효과 적용
 - **ReputationSystem**: 지역/진영별 평판 변화 및 신규 퀘스트 해금 반영
