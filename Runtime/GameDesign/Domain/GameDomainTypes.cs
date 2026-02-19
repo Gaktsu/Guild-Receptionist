@@ -166,10 +166,12 @@ namespace GuildReceptionist.GameDesign.Domain
     public sealed class Party
     {
         public string PartyId { get; }
+        public IReadOnlyList<AdventurerState> Members { get; }
 
-        public Party(string partyId)
+        public Party(string partyId, IReadOnlyList<AdventurerState>? members = null)
         {
             PartyId = partyId;
+            Members = members ?? Array.Empty<AdventurerState>();
         }
     }
 
