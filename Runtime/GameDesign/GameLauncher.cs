@@ -25,6 +25,12 @@ namespace GuildReceptionist.GameDesign
         private AssignmentPlanner? _assignmentPlanner;
         private IQuestAssessmentService? _questAssessmentService;
 
+        public QuestBoard? QuestBoard => _questBoard;
+        public AdventurerRoster? AdventurerRoster => _adventurerRoster;
+        public IMissionResolver? MissionResolver => _missionResolver;
+        public AssignmentPlanner? AssignmentPlanner => _assignmentPlanner;
+        public WorldStateSnapshot WorldSnapshot => CreateWorldSnapshot();
+
         private void Start()
         {
             var world = CreateWorldSnapshot();
