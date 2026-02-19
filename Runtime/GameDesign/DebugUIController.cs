@@ -43,6 +43,7 @@ namespace GuildReceptionist.GameDesign
             {
                 quest.AssignToParty(party.PartyId);
                 quest.MarkInProgress();
+                GameLauncher.MarkPartyInProgress(party, quest.QuestId);
             }
 
             var resolveResult = resolver.Resolve(new ResolveRequest
@@ -60,6 +61,7 @@ namespace GuildReceptionist.GameDesign
             });
 
             quest.Resolve(resolveResult.Outcome);
+            GameLauncher.ApplyResolveEffectsToParty(party, resolveResult);
 
             var summary =
                 $"Mission Result\n" +

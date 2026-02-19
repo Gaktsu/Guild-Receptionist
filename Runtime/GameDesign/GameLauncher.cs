@@ -127,6 +127,7 @@ namespace GuildReceptionist.GameDesign
 
             quest.AssignToParty(party.PartyId);
             quest.MarkInProgress();
+            MarkPartyInProgress(party, quest.QuestId);
 
             SimpleEventBus.Publish(new QuestAssignedEvent
             {
@@ -149,6 +150,7 @@ namespace GuildReceptionist.GameDesign
             });
 
             quest.Resolve(resolveResult.Outcome);
+            ApplyResolveEffectsToParty(party, resolveResult);
 
             SimpleEventBus.Publish(new MissionResolvedEvent
             {
@@ -255,15 +257,60 @@ namespace GuildReceptionist.GameDesign
             };
         }
 
+
+        public static void MarkPartyInProgress(Party party, string questId)
+        {
+            foreach (var member in party.Members)
+            {
+                member.AssignToQuest(questId);
+            }
+        }
+
+        public static void ApplyResolveEffectsToParty(Party party, in ResolveResult resolveResult)
+        {
+            foreach (var member in party.Members)
+            {
+                member.ApplyFatigue(resolveResult.Fatigue.FatigueDelta);
+            }
+
+            foreach (var injury in resolveResult.Injuries.Injuries)
+            {
+                var injuredMember = party.Members.FirstOrDefault(m => injury.Description.Contains(m.Name, StringComparison.Ordinal));
+                if (injuredMember is not null)
+                {
+                    injuredMember.ApplyInjury(in injury);
+                }
+            }
+
+            foreach (var member in party.Members)
+            {
+                member.ReleaseFromQuest();
+            }
+        }
+
+        private static RewardPackage BuildRewardFromTableOrFallback(RewardTable? rewardTable, RewardPackage fallbackReward)
+        {
+            if (rewardTable is null)
+            {
+                return fallbackReward;
+            }
+
+            var entry = rewardTable.GetDefaultEntry();
+            var gold = entry.Gold > 0 ? entry.Gold : fallbackReward.Gold;
+            var reputation = entry.Reputation > 0 ? entry.Reputation : fallbackReward.Reputation;
+            return new RewardPackage(gold, reputation, entry.FutureRewardKeys.ToArray());
+        }
+
         private static QuestInstance BuildQuestInstance(QuestData data, int dayIndex)
         {
             var questId = string.IsNullOrWhiteSpace(data.QuestId) ? Guid.NewGuid().ToString("N") : data.QuestId;
             var locationId = data.LocationProfile == null ? "unknown" : data.LocationProfile.name;
             var baseDifficulty = Math.Max(1f, data.RecommendedPower);
             var timeLimitDays = Math.Max(1, data.TimeLimitDays);
-            var baseReward = new RewardPackage(
+            var fallbackReward = new RewardPackage(
                 gold: Math.Max(10, data.RecommendedPower * 12),
                 reputation: Math.Max(1, (int)data.BaseRank + 1));
+            var baseReward = BuildRewardFromTableOrFallback(data.RewardTable, fallbackReward);
 
             return new QuestInstance(
                 questId: questId,
