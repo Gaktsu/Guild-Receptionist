@@ -127,9 +127,9 @@ namespace GuildReceptionist.GameDesign.Domain
             return Math.Clamp(weatherWeight * globalRiskWeight * locationWeight * tagWeight, 0.75f, 2.5f);
         }
 
-        private static int CountThreatTags(IReadOnlyList<string> questTags, IReadOnlyList<string> worldTags)
+        private static int CountThreatTags(IReadOnlyList<string>? questTags, IReadOnlyList<string>? worldTags)
         {
-            if (questTags.Count == 0 || worldTags.Count == 0)
+            if (questTags is null || worldTags is null || questTags.Count == 0 || worldTags.Count == 0)
             {
                 return 0;
             }

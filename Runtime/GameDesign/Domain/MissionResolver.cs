@@ -55,7 +55,10 @@ namespace GuildReceptionist.GameDesign.Domain
             }
 
             var logs = new List<ResolveLogEntry>();
-            var effectiveDifficulty = Math.Max(1f, request.Quest.AssessedDifficulty * request.Options.GlobalDifficultyMultiplier);
+            var difficultyMultiplier = request.Options.GlobalDifficultyMultiplier > 0f
+                ? request.Options.GlobalDifficultyMultiplier
+                : 1f;
+            var effectiveDifficulty = Math.Max(1f, request.Quest.AssessedDifficulty * difficultyMultiplier);
 
             var partyPower = CalculatePartyPower(request.Party, logs);
             var statScore = partyPower / effectiveDifficulty;
