@@ -104,19 +104,25 @@ namespace GuildReceptionist.GameDesign.Domain
 
     public sealed class DefaultEnvironmentDifficultyModifier : IEnvironmentDifficultyModifier
     {
+        private static readonly IReadOnlyDictionary<string, float> EmptyLocationRiskById =
+            new Dictionary<string, float>();
+
         public float GetModifier(QuestInstance quest, WorldStateSnapshot world)
         {
             var weatherWeight = 1f + (world.WeatherSeverity * 0.15f);
             var globalRiskWeight = 1f + (world.GlobalRiskLevel * 0.20f);
 
+            var locationRiskById = world.LocationRiskById ?? EmptyLocationRiskById;
+            var activeWorldTags = world.ActiveWorldTags ?? Array.Empty<string>();
+
             var locationRisk = 0f;
-            if (!string.IsNullOrWhiteSpace(quest.LocationId) && world.LocationRiskById.TryGetValue(quest.LocationId, out var foundRisk))
+            if (!string.IsNullOrWhiteSpace(quest.LocationId) && locationRiskById.TryGetValue(quest.LocationId, out var foundRisk))
             {
                 locationRisk = foundRisk;
             }
 
             var locationWeight = 1f + (locationRisk * 0.30f);
-            var tagWeight = 1f + (CountThreatTags(quest.EnvironmentTags, world.ActiveWorldTags) * 0.05f);
+            var tagWeight = 1f + (CountThreatTags(quest.EnvironmentTags, activeWorldTags) * 0.05f);
 
             return Math.Clamp(weatherWeight * globalRiskWeight * locationWeight * tagWeight, 0.75f, 2.5f);
         }

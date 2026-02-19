@@ -76,7 +76,7 @@ namespace GuildReceptionist.GameDesign.Domain
             var rollValue = (float)random.NextDouble();
             var grade = DetermineGrade(finalSuccessChance, rollValue, request.Options.CriticalSuccessBonus);
 
-            var rewards = BuildRewardPackage(request.Quest.BaseReward, grade);
+            var rewards = BuildRewardPackage(request.Quest.ExpectedReward, grade);
             var injuries = BuildInjuryPackage(request.Party, grade, random, request.Options.EnableInjurySimulation);
             var fatigue = BuildFatiguePackage(request.Party, request.Quest, grade);
 
