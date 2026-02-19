@@ -63,9 +63,9 @@ namespace GuildReceptionist.GameDesign.Domain
             // 시그모이드 기반 확률화: score=1.0일 때 50%, 1.3 부근에서 70%대
             var logistic = 1f / (1f + MathF.Exp(-(statScore - 1f) * 3.2f));
 
-            // 기한 압박 페널티: 만료일이 임박할수록 -최대 15%
+            // 기한 압박 페널티: 만료일이 임박할수록 선형으로 증가(5일 전 3% -> 1일 전 15%)
             var daysLeft = request.Quest.ExpireDay - request.DayIndex;
-            var deadlinePenalty = daysLeft <= 0 ? 0.15f : MathF.Min(0.15f, 0.03f / MathF.Max(daysLeft, 1));
+            var deadlinePenalty = CalculateDeadlinePenalty(daysLeft);
 
             var finalSuccessChance = Math.Clamp(logistic - deadlinePenalty, MinSuccessChance, MaxSuccessChance);
 
@@ -76,7 +76,7 @@ namespace GuildReceptionist.GameDesign.Domain
             var rollValue = (float)random.NextDouble();
             var grade = DetermineGrade(finalSuccessChance, rollValue, request.Options.CriticalSuccessBonus);
 
-            var rewards = BuildRewardPackage(request.Quest.BaseReward, grade);
+            var rewards = BuildRewardPackage(request.Quest.ExpectedReward, grade);
             var injuries = BuildInjuryPackage(request.Party, grade, random, request.Options.EnableInjurySimulation);
             var fatigue = BuildFatiguePackage(request.Party, request.Quest, grade);
 
@@ -140,7 +140,10 @@ namespace GuildReceptionist.GameDesign.Domain
 
         private static OutcomeGrade DetermineGrade(float successChance, float rollValue, float criticalSuccessBonus)
         {
-            if (rollValue <= (successChance * 0.20f + criticalSuccessBonus))
+            // 치명 성공은 "성공 구간 내부"에서만 발생해야 성공 확률 의미가 보존된다.
+            var baseCriticalWindow = successChance * 0.20f;
+            var criticalThreshold = Math.Clamp(baseCriticalWindow + criticalSuccessBonus, 0f, successChance);
+            if (rollValue <= criticalThreshold)
             {
                 return OutcomeGrade.CriticalSuccess;
             }
@@ -159,6 +162,24 @@ namespace GuildReceptionist.GameDesign.Domain
             }
 
             return OutcomeGrade.Fail;
+        }
+
+
+        private static float CalculateDeadlinePenalty(int daysLeft)
+        {
+            if (daysLeft <= 0)
+            {
+                return 0.15f;
+            }
+
+            if (daysLeft >= 5)
+            {
+                return 0.03f;
+            }
+
+            // 5일(0.03) -> 1일(0.15) 선형 보간
+            var t = (5f - daysLeft) / 4f;
+            return 0.03f + (0.12f * t);
         }
 
         private static RewardPackage BuildRewardPackage(RewardPackage baseReward, OutcomeGrade grade)
