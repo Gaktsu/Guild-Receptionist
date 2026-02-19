@@ -10,13 +10,13 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: cd00c79dc128a7849b69f52646ff6da7, type: 3}
-  m_Name: New Quest Data
+  m_Name: QuestData002
   m_EditorClassIdentifier: Assembly-CSharp::GuildReceptionist.GameDesign.Data.QuestData
-  questId: 
-  displayName: 
-  category: 0
+  questId: Q_002
+  displayName: Sample_Quest_002
+  category: 1
   baseRank: 0
-  recommendedPower: 0
+  recommendedPower: 3
   rewardTable: {fileID: 0}
   locationProfile: {fileID: 0}
   timeLimitDays: 1

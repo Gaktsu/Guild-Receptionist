@@ -1,7 +1,6 @@
 #nullable enable
 using System;
 using System.Collections.Generic;
-using UnityEngine;
 
 namespace GuildReceptionist.GameDesign.Domain
 {
@@ -326,29 +325,4 @@ namespace GuildReceptionist.GameDesign.Domain
         }
     }
 
-    // ══════════════════════════════════════════════════════════════
-    //  Placeholder ScriptableObject 정의
-    //  아직 내부 구현이 없으며, 에디터에서 에셋으로 생성하여 참조용으로 사용된다.
-    // ══════════════════════════════════════════════════════════════
-
-    /// <summary>
-    /// 보상 테이블 – 퀘스트 클리어 시 지급할 보상 규칙을 정의하는 ScriptableObject.
-    /// (현재는 빈 껍데기이며 추후 구현 예정)
-    /// </summary>
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/RewardTable")]
-    public sealed class RewardTable : ScriptableObject { }
-
-    /// <summary>
-    /// 장소 프로필 데이터 – 퀘스트 장소의 환경 정보를 정의하는 ScriptableObject.
-    /// (현재는 빈 껍데기이며 추후 구현 예정)
-    /// </summary>
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/LocationProfileData")]
-    public sealed class LocationProfileData : ScriptableObject { }
-
-    /// <summary>
-    /// 특성(Trait) 데이터 – 모험가에게 부여 가능한 특성의 기획 데이터를 정의하는 ScriptableObject.
-    /// (현재는 빈 껍데기이며 추후 구현 예정)
-    /// </summary>
-    [CreateAssetMenu(menuName = "GuildReceptionist/GameDesign/TraitData")]
-    public sealed class TraitData : ScriptableObject { }
 }

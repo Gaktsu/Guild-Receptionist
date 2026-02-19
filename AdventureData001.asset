@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb5a493de1c068e4db4af2b1d43ccf7a, type: 3}
-  m_Name: New Adventurer Data
+  m_Name: AdventureData001
   m_EditorClassIdentifier: Assembly-CSharp::GuildReceptionist.GameDesign.Data.AdventurerData
-  adventurerId: 
-  adventurerName: 
-  baseRole: 4
-  defaultTraits: []
+  adventurerId: Adv_001
+  adventurerName: AAA
+  baseRole: 0
+  defaultTraits:
+  - {fileID: 0}
